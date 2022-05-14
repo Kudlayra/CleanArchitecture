@@ -13,5 +13,4 @@ class SaveUserNameUseCase(private val userRepository: UserRepository) {
         val result: Boolean = userRepository.saveName(saveParam = param)
         return result
     }
-
 }
