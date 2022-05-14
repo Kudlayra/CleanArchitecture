@@ -10,10 +10,14 @@ import com.example.android.cleanarchitecture.domain.models.SaveUserNameParam
 import com.example.android.cleanarchitecture.domain.models.UserName
 import com.example.android.cleanarchitecture.domain.usecase.GetUserNameUseCase
 import com.example.android.cleanarchitecture.domain.usecase.SaveUserNameUseCase
+import com.example.android.cleanarchitecture.presentation.app.App
+import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityMainBinding
+    @Inject
+    lateinit var viewModelFactory: MainViewModelFactory
     private lateinit var viewModel: MainViewModel
 
 
@@ -22,7 +26,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        viewModel = ViewModelProvider(this, MainViewModelFactory(this)).get(MainViewModel::class.java)
+        (applicationContext as App).appComponent.inject(this)
+        viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
 
         viewModel.resultLive.observe(this) { it ->
             binding.dataTextView.text = it

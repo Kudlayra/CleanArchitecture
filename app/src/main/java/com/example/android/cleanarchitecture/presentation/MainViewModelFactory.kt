@@ -8,11 +8,10 @@ import com.example.android.cleanarchitecture.data.storage.sharedprefs.SharedPref
 import com.example.android.cleanarchitecture.domain.usecase.GetUserNameUseCase
 import com.example.android.cleanarchitecture.domain.usecase.SaveUserNameUseCase
 
-class MainViewModelFactory(context: Context): ViewModelProvider.Factory {
+class MainViewModelFactory(val getUserNameUseCase: GetUserNameUseCase,
+                           val saveUserNameUseCase: SaveUserNameUseCase): ViewModelProvider.Factory {
 
-    private val userRepository by lazy { UserRepositoryImpl(userStorage = SharedPrefUserStorage(context)) }
-    private val getUserNameUseCase by lazy { GetUserNameUseCase(userRepository = userRepository) }
-    private val saveUserNameUseCase by lazy { SaveUserNameUseCase(userRepository = userRepository) }
+
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return MainViewModel(getUserNameUseCase = getUserNameUseCase, saveUserNameUseCase = saveUserNameUseCase) as T
